@@ -1,14 +1,19 @@
-import './App.css'
 import { Routes, Route } from 'react-router-dom'
-import { HomePage, QualifiersPage } from './pages/index'
+import { Header } from './components/index'
+import { HomePage, BeckDepressionQualifier } from './pages/index'
+import './styles/global.scss'
 
 function App () {
   return (
     <div className='App'>
-      <Routes>
-        <Route path='/' element={<HomePage />} />
-        <Route path='/calificadores' element={<QualifiersPage />} />
-      </Routes>
+      <Header />
+      <div className='wrapper'>
+        <Routes>
+          <Route path='/' element={<HomePage />} />
+          <Route path='/bdi-2' element={<BeckDepressionQualifier />} />
+        </Routes>
+
+      </div>
     </div>
   )
 }

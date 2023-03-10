@@ -1,0 +1,21 @@
+@use '/src/styles/variables.scss';
+
+.nav{
+  display: flex;
+  height: 75%;
+  align-items: center;
+    &_list{
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      height: 100%;
+      list-style-type: none;
+      &_element{
+        width: fit-content;
+        &_link{
+          text-decoration: none;
+          color: variables.$primary-color;
+        }
+      }
+    }
+  }

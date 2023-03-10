@@ -1,2 +1,2 @@
 export { HomePage } from './HomePage'
-export { QualifiersPage } from './QualifiersPage'
+export { BeckDepressionQualifier } from './Qualifiers/BeckDepressionQualifier'
