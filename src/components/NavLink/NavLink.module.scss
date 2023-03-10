@@ -1,0 +1,11 @@
+@use '/src/styles/variables.scss';
+
+.active{
+  text-decoration: none;
+  color: variables.$primary-color;
+  pointer-events: none;
+}
+
+.link{
+  text-decoration: none;
+}

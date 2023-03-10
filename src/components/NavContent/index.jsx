@@ -1,5 +1,5 @@
 import styles from './NavContent.module.scss'
-import { Link } from 'react-router-dom'
+import { NavLink } from '../NavLink/index'
 
 export const NavContent = ({ links, toggleMenu }) => {
   return (
@@ -8,12 +8,11 @@ export const NavContent = ({ links, toggleMenu }) => {
         {links && links.map((link) => {
           return (
             <li key={link.url} className={styles.nav_list_element}>
-              <Link
-                className={styles.nav_list_element_link}
+              <NavLink
                 to={link.url}
                 onClick={toggleMenu}
               >{link.label}
-              </Link>
+              </NavLink>
             </li>
           )
         }

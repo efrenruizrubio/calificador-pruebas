@@ -10,20 +10,17 @@ export const Header = () => {
       url: '/'
     },
     {
-      label: 'BDI-2',
-      url: '/bdi-2'
+      label: 'Tests',
+      url: '/tests'
     },
     {
-      label: 'SCL-90-R de L. Derogatis',
-      url: '/scl-90-r'
-    },
-    {
-      lable: 'Escala de ansiedad de Hamilton',
-      url: '/escala-ansiedad-hamilton'
+      label: 'Resultados',
+      url: '/resultados'
     }
   ]
 
   const toggleMenu = () => {
+    console.log('debug')
     setIsMenuOpen((prev) =>
       !prev
     )

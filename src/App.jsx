@@ -1,6 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
-import { Header } from './components/index'
-import { HomePage, BeckDepressionQualifier } from './pages/index'
+import { Header, Test } from './components/index'
+import { HomePage, TestsPage, ResultsPage } from './pages/index'
 import './styles/global.scss'
 
 function App () {
@@ -10,7 +10,10 @@ function App () {
       <div className='wrapper'>
         <Routes>
           <Route path='/' element={<HomePage />} />
-          <Route path='/bdi-2' element={<BeckDepressionQualifier />} />
+          <Route path='/tests' element={<TestsPage />} />
+          <Route path='/tests/:id' element={<Test />} />
+          <Route path='/resultados' element={<ResultsPage />} />
+          <Route path='*' element={<h1>Página no encontrada</h1>} />
         </Routes>
 
       </div>

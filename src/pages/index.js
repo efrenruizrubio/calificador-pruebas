@@ -1,2 +1,3 @@
 export { HomePage } from './HomePage'
-export { BeckDepressionQualifier } from './Qualifiers/BeckDepressionQualifier'
+export { TestsPage } from './TestsPage'
+export { ResultsPage } from './ResultsPage'

@@ -1,3 +1,4 @@
 export { Header } from './Header/index'
-export { Qualifier } from './Qualifier/index'
+export { Test } from './Test/index'
 export { NavContent } from './NavContent/index'
+export { NavLink } from './NavLink/index'
