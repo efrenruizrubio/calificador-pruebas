@@ -54,8 +54,8 @@ export const Test = () => {
     <section className={styles.test}>
       <h1 className={styles.test_title}>Calificador: {test.name}</h1>
 
-      <form onSubmit={handleSubmit}>
-        <div className={styles.test_input}>
+      <form className={styles.test_form} onSubmit={handleSubmit}>
+        <div className={styles.test_form_input}>
           <label htmlFor='patientName'>Nombre del paciente: </label>
           <input
             type='text'
@@ -67,9 +67,9 @@ export const Test = () => {
             placeholder='Nombre'
             onBlur={handleName}
           />
-          {patientName.error && <p className={styles.test_input_error}>{patientName.error}</p>}
+          {patientName.error && <p className={styles.test_form_input_error}>{patientName.error}</p>}
         </div>
-        <div className={styles.test_input}>
+        <div className={styles.test_form_input}>
           <label htmlFor='patientAge'>Edad del paciente: </label>
           <input
             type='text'
@@ -80,24 +80,25 @@ export const Test = () => {
             inputMode='numeric'
             placeholder='Edad'
           />
-          {patientAge.error && <p className={styles.test_input_error}>{patientAge.error}</p>}
+          {patientAge.error && <p className={styles.test_form_input_error}>{patientAge.error}</p>}
         </div>
         {test.questions.map((question) => {
           return (
-            <div className={styles.test_question} key={question.question}>
-              <h3 className={styles.test_question_title}>{question.question}</h3>
-              <div className={styles.test_question_answers}>
+            <div className={styles.test__form_question} key={question.question}>
+              <h3 className={styles.test_form_question_title}>{question.question}</h3>
+              <div className={styles.test_form_question_answers}>
                 {question.answers.map((answer) => {
                   return (
-                    <div key={answer.option}>
+                    <div className={styles.test_form_question_answers_container} key={answer.option}>
                       <input
                         type='radio'
                         name={question.question}
                         id={`${question.question} ${answer.option}`}
                         value={answer.value}
+                        className={styles.test_form_question_answers_container_input}
                         onChange={handleChange}
                       />
-                      <label htmlFor={answer.option}>{answer.option}</label>
+                      <label className={styles.test_form_question_answers_container_label} htmlFor={answer.option}>{answer.option}</label>
                     </div>
                   )
                 })}
@@ -105,7 +106,7 @@ export const Test = () => {
             </div>
           )
         })}
-        <button disabled={!canSubmit}>Submit</button>
+        <button className={styles.test_form_submit} disabled={!canSubmit}>Calificar prueba</button>
       </form>
     </section>
   )
