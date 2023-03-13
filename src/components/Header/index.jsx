@@ -20,7 +20,6 @@ export const Header = () => {
   ]
 
   const toggleMenu = () => {
-    console.log('debug')
     setIsMenuOpen((prev) =>
       !prev
     )

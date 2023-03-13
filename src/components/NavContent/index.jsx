@@ -8,11 +8,13 @@ export const NavContent = ({ links, toggleMenu }) => {
         {links && links.map((link) => {
           return (
             <li key={link.url} className={styles.nav_list_element}>
-              <NavLink
-                to={link.url}
-                onClick={toggleMenu}
-              >{link.label}
-              </NavLink>
+              <div onClick={toggleMenu}>
+                <NavLink
+                  to={link.url}
+                >{link.label}
+                </NavLink>
+
+              </div>
             </li>
           )
         }
