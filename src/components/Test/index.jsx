@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import { tests } from '../../utils/index'
 import ResultsContext from '../../context/ResultsContext'
 import styles from './Test.module.scss'
+import { createResult } from '../../services/index'
 
 export const Test = () => {
   const [patientName, setPatientName] = useState({ value: '', error: '' })
@@ -53,8 +54,19 @@ export const Test = () => {
     const score = answers.reduce((acc, curr) => acc + curr.value, 0)
     const testResults = answers.sort((a, b) => a.index - b.index)
 
-    setResults((prev) => {
-      return [...prev, { name: patientName.value, age: patientAge.value, score, testResults }]
+    const newResult = {
+      name: patientName.value,
+      age: patientAge.value,
+      score,
+      testResults
+    }
+
+    createResult(newResult).then((res) => {
+      setResults((prev) => {
+        return [...prev, res.data]
+      })
+    }).catch((err) => {
+      console.error(err)
     })
   }
 
