@@ -1,6 +1,9 @@
 @use '/src/styles/variables.scss';
 
 .test{
+    &_title{
+        margin-bottom: 1rem;
+    }
     &_form{
         display: flex;
         flex-direction: column;
@@ -39,7 +42,7 @@
         &_submit{
             width: 100%;
             margin: 1rem 0 2rem;
-            padding: 0.5rem;
+            padding: 0.5rem 0;
             border: none;
             border-radius: 5px;
             background-color: variables.$secondary-background-color;

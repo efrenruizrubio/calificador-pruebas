@@ -1,0 +1,20 @@
+@use '/src/styles/variables.scss';
+
+.tests{
+    &_list{
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        list-style-type: none;
+        &_element{
+            text-decoration: none;
+            color: variables.$secondary-color;
+        }
+    }
+    &_title{
+        margin-bottom: 1rem;
+    }
+    &_description{
+        margin: 1rem 0;
+    }
+}

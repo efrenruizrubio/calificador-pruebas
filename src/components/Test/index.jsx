@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { useParams } from 'react-router-dom'
 import { tests } from '../../utils/index'
+import ResultsContext from '../../context/ResultsContext'
 import styles from './Test.module.scss'
 
 export const Test = () => {
@@ -9,6 +10,8 @@ export const Test = () => {
   const [answers, setAnswers] = useState([])
 
   const [canSubmit, setCanSubmit] = useState(false)
+
+  const { setResults } = useContext(ResultsContext)
 
   const id = Number(useParams().id)
   const test = tests.find(test => test.id === id)
@@ -29,13 +32,13 @@ export const Test = () => {
     }
   }
 
-  const handleChange = (e) => {
+  const handleChange = (e, index) => {
     setAnswers((prev) => {
       const element = prev.findIndex((el) => el.option === e.target.name)
       if (prev[element]) {
         prev.splice(element, 1)
       }
-      const elements = [...prev, { option: e.target.name, value: Number(e.target.value) }]
+      const elements = [...prev, { option: e.target.name, value: Number(e.target.value), index }]
       if (elements.length === test.questions.length) {
         setCanSubmit(true)
       } else {
@@ -47,7 +50,12 @@ export const Test = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log(answers)
+    const score = answers.reduce((acc, curr) => acc + curr.value, 0)
+    const testResults = answers.sort((a, b) => a.index - b.index)
+
+    setResults((prev) => {
+      return [...prev, { name: patientName.value, age: patientAge.value, score, testResults }]
+    })
   }
 
   return (
@@ -82,7 +90,7 @@ export const Test = () => {
           />
           {patientAge.error && <p className={styles.test_form_input_error}>{patientAge.error}</p>}
         </div>
-        {test.questions.map((question) => {
+        {test.questions && test.questions.map((question) => {
           return (
             <div className={styles.test__form_question} key={question.question}>
               <h3 className={styles.test_form_question_title}>{question.question}</h3>
@@ -96,7 +104,7 @@ export const Test = () => {
                         id={`${question.question} ${answer.option}`}
                         value={answer.value}
                         className={styles.test_form_question_answers_container_input}
-                        onChange={handleChange}
+                        onChange={(e) => handleChange(e, question.index)}
                       />
                       <label className={styles.test_form_question_answers_container_label} htmlFor={answer.option}>{answer.option}</label>
                     </div>
