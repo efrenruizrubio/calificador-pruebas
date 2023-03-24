@@ -7,6 +7,7 @@ import { createResult } from '../../services/index'
 
 export const Test = () => {
   const [patientName, setPatientName] = useState({ value: '', error: '' })
+  const [patientEmail, setPatientEmail] = useState({ value: '', error: '' })
   const [patientAge, setPatientAge] = useState({ value: '', error: '' })
   const [answers, setAnswers] = useState([])
 
@@ -25,11 +26,23 @@ export const Test = () => {
     }
   }
 
-  const handleAge = (e) => {
-    if (isNaN(Number(e.target.value))) {
-      setPatientAge({ value: '', error: 'La edad no puede incluír caracteres no numéricos' })
+  const handleEmail = (e) => {
+    if (!e.target.value) {
+      setPatientEmail({ value: '', error: 'El correo electrónico del paciente no puede estar vacío' })
     } else {
-      setPatientAge({ value: e.target.value, error: '' })
+      setPatientEmail({ value: e.target.value, error: '' })
+    }
+  }
+
+  const handleAge = (e) => {
+    if (e.target.value) {
+      if (isNaN(Number(e.target.value))) {
+        setPatientAge({ value: '', error: 'La edad no puede incluír caracteres no numéricos' })
+      } else {
+        setPatientAge({ value: e.target.value, error: '' })
+      }
+    } else {
+      setPatientAge({ value: '', error: 'La edad no puede estar vacía' })
     }
   }
 
@@ -56,6 +69,7 @@ export const Test = () => {
 
     const newResult = {
       name: patientName.value,
+      email: patientEmail.value,
       age: patientAge.value,
       score,
       testResults
@@ -90,6 +104,20 @@ export const Test = () => {
           {patientName.error && <p className={styles.test_form_input_error}>{patientName.error}</p>}
         </div>
         <div className={styles.test_form_input}>
+          <label htmlFor='patientEmail'>Correo electrónico del paciente: </label>
+          <input
+            type='text'
+            value={patientEmail.value}
+            required
+            onChange={handleEmail}
+            name='patientEmail'
+            id='patientEmail'
+            placeholder='Correo electrónico'
+            onBlur={handleEmail}
+          />
+          {patientEmail.error && <p className={styles.test_form_input_error}>{patientEmail.error}</p>}
+        </div>
+        <div className={styles.test_form_input}>
           <label htmlFor='patientAge'>Edad del paciente: </label>
           <input
             type='text'
@@ -99,6 +127,7 @@ export const Test = () => {
             id='patientAge'
             inputMode='numeric'
             placeholder='Edad'
+            onBlur={handleAge}
           />
           {patientAge.error && <p className={styles.test_form_input_error}>{patientAge.error}</p>}
         </div>
