@@ -15,7 +15,7 @@ export const Result = () => {
           return (
             <li key={result.id}>
               <div>
-                <h3>{result.name}</h3>
+                <h3>{result.patient.name}</h3>
                 <p>{result.age}</p>
                 <p>{result.score}</p>
               </div>

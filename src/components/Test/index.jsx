@@ -72,7 +72,8 @@ export const Test = () => {
       email: patientEmail.value,
       age: patientAge.value,
       score,
-      testResults
+      testResults,
+      appliedTest: id
     }
 
     createResult(newResult).then((res) => {
