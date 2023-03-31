@@ -1,7 +1,7 @@
-import { Result } from '../components/index'
+import { ResultList } from '../components/index'
 
 export const ResultsPage = () => {
   return (
-    <Result />
+    <ResultList />
   )
 }
