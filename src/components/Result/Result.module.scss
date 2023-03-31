@@ -1,0 +1,14 @@
+@use '/src/styles/variables.scss';
+
+.result{
+  &_title{
+
+  }
+  &_filter{
+    margin: 1rem 0;
+    width: 100%;
+  }
+  &_list{
+    list-style: none;
+  }
+}
