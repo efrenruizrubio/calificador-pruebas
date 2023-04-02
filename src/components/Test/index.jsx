@@ -66,6 +66,19 @@ export const Test = () => {
     e.preventDefault()
     const score = answers.reduce((acc, curr) => acc + curr.value, 0)
     const testResults = answers.sort((a, b) => a.index - b.index)
+    let status = ''
+    if (id === 1) {
+      if (score <= 13) status = 'Depresión mínima'
+      if (score > 13 && score <= 19) status = 'Depresión leve'
+      if (score > 19 && score <= 28) status = 'Depresión moderada'
+      if (score > 28 && score <= 63) status = 'Depresión grave'
+    }
+    if (id === 2) {
+      console.log('2')
+    }
+    if (id === 3) {
+      console.log('3')
+    }
 
     const newResult = {
       name: patientName.value,
@@ -73,7 +86,8 @@ export const Test = () => {
       age: patientAge.value,
       score,
       testResults,
-      appliedTest: id
+      appliedTest: id,
+      status
     }
 
     createResult(newResult).then((res) => {

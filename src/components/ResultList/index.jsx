@@ -33,11 +33,20 @@ export const ResultList = () => {
             .map((result) => {
               return (
                 <li key={result.id}>
-                  <div>
+                  <div className={styles.result}>
 
-                    <NavLink to={`/resultados/${result.id}`}>{result.patient.name}</NavLink>
-                    <p>{result.patient.age}</p>
-                    <p>{result.score}</p>
+                    <p className={styles.result_link}>
+                      Nombre del paciente: <NavLink to={`/resultados/${result.id}`}>{result.patient.name}</NavLink>
+                    </p>
+                    <p className={styles.result_data}>
+                      Edad del paciente: {result.patient.age}
+                    </p>
+                    <p className={styles.result_data}>
+                      Test aplicado: {result.appliedTest}
+                    </p>
+                    <p className={styles.result_data}>
+                      Resultado: {result.status}
+                    </p>
                   </div>
                 </li>
               )
