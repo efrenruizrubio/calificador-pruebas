@@ -1,1 +1,1 @@
-export { getAll, createResult } from './Tests/testResults'
+export { resultsService } from './Tests/results'

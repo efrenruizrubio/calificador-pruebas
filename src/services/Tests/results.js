@@ -2,10 +2,15 @@ import axios from 'axios'
 
 const baseUrl = 'http://localhost:3001/api/results'
 
-export const getAll = () => {
+const getAll = () => {
   return axios.get(baseUrl)
 }
 
-export const createResult = newResult => {
+const createResult = newResult => {
   return axios.post(baseUrl, newResult)
+}
+
+export const resultsService = {
+  getAll,
+  createResult
 }

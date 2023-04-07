@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom'
 import { tests } from '../../utils/index'
 import ResultsContext from '../../context/ResultsContext'
 import styles from './Test.module.scss'
-import { createResult } from '../../services/index'
+import { resultsService } from '../../services/index'
 
 export const Test = () => {
   const [patientName, setPatientName] = useState({ value: '', error: '' })
@@ -90,7 +90,7 @@ export const Test = () => {
       status
     }
 
-    createResult(newResult).then((res) => {
+    resultsService.createResult(newResult).then((res) => {
       setResults((prev) => {
         return [...prev, res.data]
       })
