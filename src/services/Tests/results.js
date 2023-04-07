@@ -2,8 +2,12 @@ import axios from 'axios'
 
 const baseUrl = 'http://localhost:3001/api/results'
 
-const getAll = () => {
+const getCount = () => {
   return axios.get(baseUrl)
+}
+
+const getAll = filter => {
+  return axios.post(baseUrl, filter)
 }
 
 const createResult = newResult => {
@@ -11,6 +15,7 @@ const createResult = newResult => {
 }
 
 export const resultsService = {
+  getCount,
   getAll,
   createResult
 }
