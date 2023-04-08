@@ -7,13 +7,19 @@ export const Paginator = ({ currentPage, setCurrentPage, totalPages, elementsPer
   )
 
   const handleChangePage = (page) => {
-    setCurrentPage({ page, limit: elementsPerPage })
+    setCurrentPage((prev) => ({ ...prev, page }))
   }
+
   return (
-    <div className={`${styles.paginator} ${className}`}>
+    <div className={`${styles.paginator} ${className ?? ''}`}>
       {currentTotalPages.length && currentTotalPages.map((page, i) => {
         return (
-          <button key={i} className={styles.paginator_button} onClick={() => handleChangePage(page)}>{page}</button>
+          <button
+            key={i}
+            className={`${styles.paginator_button} ${currentPage === page ? styles.paginator_button__active : null}`}
+            onClick={() => handleChangePage(page)}
+          >{page}
+          </button>
         )
       })}
     </div>

@@ -31,6 +31,8 @@ export const Header = () => {
         src='/assets/icons/logo.png'
         alt='Logo del Centro Universitario de Ciencias Económico Administrativas'
         className={styles.header_logo}
+        width={100}
+        height='auto'
       />
       <div className={styles.header_nav}>
         <NavContent links={links} />
@@ -41,7 +43,7 @@ export const Header = () => {
           <NavContent links={links} toggleMenu={toggleMenu} />
         </div>
       </aside>
-      <button className={styles.header_menu} onClick={toggleMenu}>
+      <button className={styles.header_menu} onClick={toggleMenu} type='button' aria-label={isMenuOpen ? 'Abrir Menú' : 'Cerrar Menú'}>
         <span className={`${isMenuOpen ? styles.header_menu_hamburger_navOpen : ''} ${styles.header_menu_hamburger}`} />
       </button>
     </header>

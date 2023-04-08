@@ -7,14 +7,18 @@ export const ResultList = () => {
   const [results, setResults] = useState([])
   const [filter, setFilter] = useState('')
   const [filteredResults, setFilteredResults] = useState([])
-  const [paginator, setPaginator] = useState({ page: 1, limit: 5 })
+  const [paginator, setPaginator] = useState({ page: 1, limit: 10 })
   const [totalPages, setTotalPages] = useState(0)
+
+  const handleTotalPagesChange = (element) => {
+    setTotalPages(Math.ceil(element / paginator.limit))
+  }
 
   useEffect(() => {
     resultsService.getCount().then((res) => {
       if (!res.data['COUNT(Id)'] === 0) return
 
-      setTotalPages(Math.ceil(res.data['COUNT(Id)'] / paginator.limit))
+      handleTotalPagesChange(res.data['COUNT(Id)'])
       resultsService.getAll(paginator).then((res) => {
         setResults(res.data)
         setFilteredResults(res.data)
@@ -23,11 +27,12 @@ export const ResultList = () => {
   }, [])
 
   useEffect(() => {
-    resultsService.getAll(paginator).then((res) => {
+    handleTotalPagesChange(results.length)
+    /* resultsService.getAll(paginator).then((res) => {
       setFilter('')
       setResults(res.data)
       setFilteredResults(res.data)
-    })
+    }) */
   }, [paginator])
 
   useEffect(() => {
@@ -36,13 +41,17 @@ export const ResultList = () => {
 
   const handleFilterChange = (e) => {
     setFilter(e.target.value)
-    setPaginator()
+  }
+
+  const handleSelectChange = (e) => {
+    setPaginator((prev) => ({ ...prev, limit: Number(e.target.value) }))
   }
 
   return (
     <section className={styles.result}>
       <h1 className={styles.result_title}>Resultados</h1>
       <Filter type='text' value={filter} placeholder='Buscar resultado por nombre de paciente' className={styles.result_filter} handleChange={handleFilterChange} />
+      <Select options={[10, 25, 50, 100]} label='Elementos por página' handleChange={handleSelectChange} />
       <ul className={styles.result_list}>
         {filteredResults.length
           ? filteredResults.map((result) => {
@@ -64,7 +73,7 @@ export const ResultList = () => {
 
       {totalPages > 0 && (
         <>
-          <Select />
+
           <Paginator
             totalPages={totalPages}
             className={styles.result_paginator}
