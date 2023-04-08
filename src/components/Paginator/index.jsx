@@ -18,6 +18,7 @@ export const Paginator = ({ currentPage, setCurrentPage, totalPages, elementsPer
             key={i}
             className={`${styles.paginator_button} ${currentPage === page ? styles.paginator_button__active : null}`}
             onClick={() => handleChangePage(page)}
+            disabled={currentPage === page}
           >{page}
           </button>
         )
