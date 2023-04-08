@@ -1,7 +1,6 @@
-import { useState, useContext } from 'react'
+import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { tests } from '../../utils/index'
-import ResultsContext from '../../context/ResultsContext'
 import styles from './Test.module.scss'
 import { resultsService } from '../../services/index'
 
@@ -12,8 +11,6 @@ export const Test = () => {
   const [answers, setAnswers] = useState([])
 
   const [canSubmit, setCanSubmit] = useState(false)
-
-  const { setResults } = useContext(ResultsContext)
 
   const id = Number(useParams().id)
   const test = tests.find(test => test.id === id)
@@ -91,9 +88,7 @@ export const Test = () => {
     }
 
     resultsService.createResult(newResult).then((res) => {
-      setResults((prev) => {
-        return [...prev, res.data]
-      })
+      console.log(res)
     }).catch((err) => {
       console.error(err)
     })

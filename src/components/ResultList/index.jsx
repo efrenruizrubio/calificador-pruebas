@@ -1,4 +1,4 @@
-import { NavLink, Filter, Card } from '../../components/index'
+import { NavLink, Filter, Card, Paginator, Select } from '../../components/index'
 import { useState, useEffect } from 'react'
 import { resultsService } from '../../services/index'
 import styles from './ResultList.module.scss'
@@ -7,7 +7,7 @@ export const ResultList = () => {
   const [results, setResults] = useState([])
   const [filter, setFilter] = useState('')
   const [filteredResults, setFilteredResults] = useState([])
-  const [paginator, setPaginator] = useState({ page: 1, limit: 10 })
+  const [paginator, setPaginator] = useState({ page: 1, limit: 5 })
   const [totalPages, setTotalPages] = useState(0)
 
   useEffect(() => {
@@ -22,13 +22,13 @@ export const ResultList = () => {
     })
   }, [])
 
-  /* useEffect(() => {
+  useEffect(() => {
     resultsService.getAll(paginator).then((res) => {
       setFilter('')
       setResults(res.data)
       setFilteredResults(res.data)
     })
-  }, [paginator]) */
+  }, [paginator])
 
   useEffect(() => {
     setFilteredResults(results.filter(r => r.patient.name.toLowerCase().startsWith(filter)))
@@ -48,22 +48,14 @@ export const ResultList = () => {
           ? filteredResults.map((result) => {
             return (
               <li key={result.id}>
-                <Card elements={[{ name: 'Nombre del paciente: ', value: <NavLink to={`/resultados/${result.id}`}>{result.patient.name}</NavLink> }, { name: 'Edad del paciente: ', value: result.patient.age }, { name: 'Test aplicado: ', value: result.appliedTest }, { name: 'Resultado: ', value: result.status }]} className={styles.result_list_card} id={result.id} />
-                {/* <div className={styles.result_list_card}>
-
-                  <p className={styles.result_list_card_link}>
-                    Nombre del paciente: <NavLink to={`/resultados/${result.id}`}>{result.patient.name}</NavLink>
-                  </p>
-                  <p className={styles.result_list_card_data}>
-                    Edad del paciente: {result.patient.age}
-                  </p>
-                  <p className={styles.result_list_card_data}>
-                    Test aplicado: {result.appliedTest}
-                  </p>
-                  <p className={styles.result_list_card_data}>
-                    Resultado: {result.status}
-                  </p>
-                </div> */}
+                <Card
+                  elements={
+                    [{ name: 'Nombre del paciente: ', value: <NavLink to={`/resultados/${result.id}`}>{result.patient.name}</NavLink> },
+                      { name: 'Edad del paciente: ', value: result.patient.age }, { name: 'Test aplicado: ', value: result.appliedTest },
+                      { name: 'Resultado: ', value: result.status }]
+}
+                  id={result.id}
+                />
               </li>
             )
           })
@@ -71,9 +63,16 @@ export const ResultList = () => {
       </ul>
 
       {totalPages > 0 && (
-        <div className={styles.result_paginator}>
-          <span>{totalPages}</span>
-        </div>
+        <>
+          <Select />
+          <Paginator
+            totalPages={totalPages}
+            className={styles.result_paginator}
+            currentPage={paginator.page}
+            setCurrentPage={setPaginator}
+            elementsPerPage={paginator.limit}
+          />
+        </>
 
       )}
     </section>

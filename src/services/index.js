@@ -1,1 +1,1 @@
-export { resultsService } from './Tests/results'
+export { resultsService } from './Results/results'
