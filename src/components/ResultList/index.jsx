@@ -26,35 +26,28 @@ export const ResultList = () => {
       return
     }
     setTimeout(() => {
-      if (filter === secondaryFilter.current) {
+      if (filter === secondaryFilter.current && filter) {
         resultsService.getFiltered({ filter })
           .then((res) => {
-            console.log(res.data)
+            setFilteredResults(res.data)
           })
           .catch((err) => {
-            console.error(err)
+            setFilteredResults([])
+            console.error(err.response.data.error)
           })
-      }
-    }, 1500)
-    // const filteredResults = results.filter(r => r.patient.name.toLowerCase().startsWith(filter))
-    setFilteredResults(filteredResults)
+      } else setFilteredResults(results)
+    }, 500)
   }, [filter])
 
   const handleFilterChange = (e) => {
     setFilter(e.target.value)
     secondaryFilter.current = e.target.value
-    // resultsService.getCount()
   }
-
-  /*   const handleSelectChange = (e) => {
-    setPaginator((prev) => ({ page: 1, limit: Number(e.target.value) }))
-  } */
 
   return (
     <section className={styles.result}>
       <h1 className={styles.result_title}>Resultados</h1>
       <Filter type='text' value={filter} placeholder='Buscar resultado por nombre de paciente' className={styles.result_filter} handleChange={handleFilterChange} />
-      {/* <Select options={[10, 25, 50, 100]} label='Elementos por página' handleChange={handleSelectChange} /> */}
       <ul className={styles.result_list}>
         {filteredResults.length
           ? filteredResults.map((result) => {
