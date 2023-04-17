@@ -1,19 +1,22 @@
-import { NavLink, Filter, Card } from '../../components/index'
+import { NavLink, Filter, Card, Paginator } from '../../components/index'
 import { useState, useEffect, useRef } from 'react'
 import { resultsService } from '../../services/index'
 import styles from './ResultList.module.scss'
 
 export const ResultList = () => {
   const [results, setResults] = useState([])
+  const [totalResults, setTotalResults] = useState(0)
   const [filter, setFilter] = useState('')
   const [filteredResults, setFilteredResults] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
   const isFirstRun = useRef(true)
   const secondaryFilter = useRef('')
 
   useEffect(() => {
-    resultsService.getCount(undefined).then((res) => {
-      if (!res.data['COUNT(Id)'] === 0) return
+    resultsService.getCount(undefined).then((count) => {
+      if (!count.data['COUNT(Id)'] === 0) return
       resultsService.getAll().then((res) => {
+        setTotalResults(count.data['COUNT(Id)'])
         setResults(res.data)
         setFilteredResults(res.data)
       })
@@ -50,7 +53,7 @@ export const ResultList = () => {
       <Filter type='text' value={filter} placeholder='Buscar resultado por nombre de paciente' className={styles.result_filter} handleChange={handleFilterChange} />
       <ul className={styles.result_list}>
         {filteredResults.length
-          ? filteredResults.map((result) => {
+          ? filteredResults.slice(((currentPage * 10) - 10), ((currentPage * 10))).map((result) => {
             return (
               <li key={result.id}>
                 <Card
@@ -67,6 +70,7 @@ export const ResultList = () => {
           })
           : <p>No hay resultados</p>}
       </ul>
+      {totalResults > 0 && <Paginator elementsPerPage={10} totalElements={totalResults} currentPage={currentPage} setCurrentPage={setCurrentPage} />}
     </section>
   )
 }
