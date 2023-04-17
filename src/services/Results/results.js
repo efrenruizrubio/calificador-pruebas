@@ -6,8 +6,12 @@ const getCount = () => {
   return axios.get(`${baseUrl}/getCount`)
 }
 
-const getAll = filter => {
-  return axios.post(`${baseUrl}/getAll`, filter)
+const getAll = () => {
+  return axios.get(`${baseUrl}/getAll`)
+}
+
+const getFiltered = (filter) => {
+  return axios.post(`${baseUrl}/getFiltered`, filter)
 }
 
 const createResult = newResult => {
@@ -17,5 +21,6 @@ const createResult = newResult => {
 export const resultsService = {
   getCount,
   getAll,
+  getFiltered,
   createResult
 }
