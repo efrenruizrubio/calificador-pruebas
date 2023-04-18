@@ -1,4 +1,4 @@
-import { NavLink, Filter, Card, Paginator } from '../../components/index'
+import { NavLink, Filter, Card, Paginator, Select } from '../../components/index'
 import { useState, useEffect, useRef } from 'react'
 import { resultsService } from '../../services/index'
 import styles from './ResultList.module.scss'
@@ -6,16 +6,19 @@ import styles from './ResultList.module.scss'
 export const ResultList = () => {
   const [results, setResults] = useState([])
   const [totalResults, setTotalResults] = useState(0)
+  const [elementsPerPage, setElementsPerPage] = useState(10)
   const [filter, setFilter] = useState('')
   const [filteredResults, setFilteredResults] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
-  const isFirstRun = useRef(true)
+
+  const isFirstRunFilter = useRef(true)
+  const isFirstRunSelect = useRef(true)
   const secondaryFilter = useRef('')
 
   useEffect(() => {
     resultsService.getCount(undefined).then((count) => {
       if (!count.data['COUNT(Id)'] === 0) return
-      resultsService.getAll().then((res) => {
+      resultsService.getAll({ page: currentPage, limit: elementsPerPage }).then((res) => {
         setTotalResults(count.data['COUNT(Id)'])
         setResults(res.data)
         setFilteredResults(res.data)
@@ -24,8 +27,8 @@ export const ResultList = () => {
   }, [])
 
   useEffect(() => {
-    if (isFirstRun.current) {
-      isFirstRun.current = false
+    if (isFirstRunFilter.current) {
+      isFirstRunFilter.current = false
       return
     }
     setTimeout(() => {
@@ -42,18 +45,38 @@ export const ResultList = () => {
     }, 500)
   }, [filter])
 
+  useEffect(() => {
+    if (isFirstRunSelect.current) {
+      isFirstRunSelect.current = false
+      return
+    }
+    resultsService.getAll({ page: currentPage, limit: elementsPerPage }).then((res) => {
+      setResults(res.data)
+      setFilteredResults(res.data)
+    })
+      .catch((err) => {
+        console.error(err.response.data.error)
+      })
+  }, [currentPage, elementsPerPage])
+
   const handleFilterChange = (e) => {
     setFilter(e.target.value)
     secondaryFilter.current = e.target.value
+  }
+
+  const handleElementsPerPage = (e) => {
+    setCurrentPage(1)
+    setElementsPerPage(Number(e.target.value))
   }
 
   return (
     <section className={styles.result}>
       <h1 className={styles.result_title}>Resultados</h1>
       <Filter type='text' value={filter} placeholder='Buscar resultado por nombre de paciente' className={styles.result_filter} handleChange={handleFilterChange} />
+      <Select options={[10, 25, 50, 100]} label='Elementos por página' handleChange={handleElementsPerPage} />
       <ul className={styles.result_list}>
         {filteredResults.length
-          ? filteredResults.slice(((currentPage * 10) - 10), ((currentPage * 10))).map((result) => {
+          ? filteredResults.map((result) => {
             return (
               <li key={result.id}>
                 <Card
@@ -70,7 +93,7 @@ export const ResultList = () => {
           })
           : <p>No hay resultados</p>}
       </ul>
-      {totalResults > 0 && <Paginator elementsPerPage={10} totalElements={totalResults} currentPage={currentPage} setCurrentPage={setCurrentPage} />}
+      {totalResults > 0 && <Paginator elementsPerPage={elementsPerPage} totalElements={totalResults} currentPage={currentPage} setCurrentPage={setCurrentPage} />}
     </section>
   )
 }
