@@ -43,13 +43,13 @@ export const Test = () => {
     }
   }
 
-  const handleChange = (e, index) => {
+  const handleChange = (e, index, section) => {
     setAnswers((prev) => {
       const element = prev.findIndex((el) => el.option === e.target.name)
       if (prev[element]) {
         prev.splice(element, 1)
       }
-      const elements = [...prev, { option: e.target.name, value: Number(e.target.value), index }]
+      const elements = [...prev, { option: e.target.name, value: Number(e.target.value), index, ...(section && { section }) }]
       if (elements.length === test.questions.length) {
         setCanSubmit(true)
       } else {
@@ -63,28 +63,38 @@ export const Test = () => {
     e.preventDefault()
     const score = answers.reduce((acc, curr) => acc + curr.value, 0)
     const testResults = answers.sort((a, b) => a.index - b.index)
-    let status = ''
-    if (id === 1) {
-      if (score <= 13) status = 'Depresión mínima'
-      if (score > 13 && score <= 19) status = 'Depresión leve'
-      if (score > 19 && score <= 28) status = 'Depresión moderada'
-      if (score > 28 && score <= 63) status = 'Depresión grave'
-    }
-    if (id === 2) {
-      console.log('2')
-    }
-    if (id === 3) {
-      console.log('3')
-    }
-
     const newResult = {
       name: patientName.value,
       email: patientEmail.value,
       age: patientAge.value,
       score,
       testResults,
-      appliedTest: id,
-      status
+      appliedTest: id
+    }
+    if (id === 1) {
+      let status = ''
+      if (score <= 13) status = 'Depresión mínima'
+      if (score > 13 && score <= 19) status = 'Depresión leve'
+      if (score > 19 && score <= 28) status = 'Depresión moderada'
+      if (score > 28 && score <= 63) status = 'Depresión grave'
+      newResult.status = status
+    }
+    if (id === 2) {
+      const grouped = testResults.reduce((acc, obj) => {
+        const key = obj.section
+        if (!acc[key]) {
+          acc[key] = { questions: 0, valueSum: 0, section: key }
+        }
+        acc[key].questions++
+        acc[key].valueSum += obj.value
+        return acc
+      }, {})
+
+      const sections = Object.entries(grouped).map((group) => { const element = group[1]; return { section: element.section, result: element.valueSum / element.questions } })
+      console.log(sections)
+    }
+    if (id === 3) {
+      console.log('3')
     }
 
     resultsService.createResult(newResult).then((res) => {
@@ -144,20 +154,20 @@ export const Test = () => {
         {test.questions && test.questions.map((question) => {
           return (
             <div className={styles.test__form_question} key={question.question}>
-              <h3 className={styles.test_form_question_title}>{question.question}</h3>
+              <h3 className={styles.test_form_question_title}>{`${question.index}.- ${question.question}`}</h3>
               <div className={styles.test_form_question_answers}>
                 {question.answers.map((answer) => {
                   return (
-                    <div className={styles.test_form_question_answers_container} key={answer.option}>
+                    <div className={styles.test_form_question_answers_container} key={`${question.question}-${answer.option}`}>
                       <input
                         type='radio'
                         name={question.question}
                         id={`${question.question} ${answer.option}`}
                         value={answer.value}
                         className={styles.test_form_question_answers_container_input}
-                        onChange={(e) => handleChange(e, question.index)}
+                        onChange={(e) => handleChange(e, question.index, question?.section)}
                       />
-                      <label className={styles.test_form_question_answers_container_label} htmlFor={answer.option}>{answer.option}</label>
+                      <label className={styles.test_form_question_answers_container_label} htmlFor={`${question.question} ${answer.option}`}>{answer.option}</label>
                     </div>
                   )
                 })}
