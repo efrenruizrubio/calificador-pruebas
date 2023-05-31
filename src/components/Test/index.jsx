@@ -9,11 +9,12 @@ export const Test = () => {
   const [patientEmail, setPatientEmail] = useState({ value: '', error: '' })
   const [patientAge, setPatientAge] = useState({ value: '', error: '' })
   const [answers, setAnswers] = useState([])
+  const [dynamicInputs, setDynamicInputs] = useState([])
 
   const [canSubmit, setCanSubmit] = useState(false)
 
   const id = Number(useParams().id)
-  const test = tests.find(test => test.id === id)
+  const test = tests.find((test) => test.id === id)
 
   const handleName = (e) => {
     if (!e.target.value) {
@@ -25,7 +26,10 @@ export const Test = () => {
 
   const handleEmail = (e) => {
     if (!e.target.value) {
-      setPatientEmail({ value: '', error: 'El correo electrónico del paciente no puede estar vacío' })
+      setPatientEmail({
+        value: '',
+        error: 'El correo electrónico del paciente no puede estar vacío'
+      })
     } else {
       setPatientEmail({ value: e.target.value, error: '' })
     }
@@ -34,7 +38,10 @@ export const Test = () => {
   const handleAge = (e) => {
     if (e.target.value) {
       if (isNaN(Number(e.target.value))) {
-        setPatientAge({ value: '', error: 'La edad no puede incluír caracteres no numéricos' })
+        setPatientAge({
+          value: '',
+          error: 'La edad no puede incluír caracteres no numéricos'
+        })
       } else {
         setPatientAge({ value: e.target.value, error: '' })
       }
@@ -49,7 +56,15 @@ export const Test = () => {
       if (prev[element]) {
         prev.splice(element, 1)
       }
-      const elements = [...prev, { option: e.target.name, value: Number(e.target.value), index, ...(section && { section }) }]
+      const elements = [
+        ...prev,
+        {
+          option: e.target.name,
+          value: Number(e.target.value),
+          index,
+          ...(section && { section })
+        }
+      ]
       if (elements.length === test.questions.length) {
         setCanSubmit(true)
       } else {
@@ -83,25 +98,47 @@ export const Test = () => {
       const grouped = testResults.reduce((acc, obj) => {
         const key = obj.section
         if (!acc[key]) {
-          acc[key] = { questions: 0, valueSum: 0, section: key }
+          acc[key] = { questions: 0, valueSum: 0, indicator: key, nonPositive: 0 }
         }
         acc[key].questions++
         acc[key].valueSum += obj.value
+        if (obj.value < 1) acc[key].nonPositive++
         return acc
       }, {})
 
-      const sections = Object.entries(grouped).map((group) => { const element = group[1]; return { section: element.section, result: element.valueSum / element.questions } })
-      console.log(sections)
+      const nonPositive = Object.values(grouped).reduce((acc, curr) => {
+        acc += curr.nonPositive
+        return acc
+      }, 0)
+
+      const questions = test.questions.length
+      const igs = { indicator: 'IGS', result: score / questions }
+      const tsp = { indicator: 'TSP', result: questions - nonPositive }
+      const imsp = { indicator: 'IMSP', result: score / tsp.result }
+
+      const indicators = Object.entries(grouped).map((group) => {
+        const element = group[1]
+        return {
+          indicator: element.indicator,
+          result: element.valueSum / element.questions
+        }
+      }).concat([igs, tsp, imsp])
+
+      newResult.indicators = indicators
     }
     if (id === 3) {
       console.log('3')
     }
 
-    resultsService.createResult(newResult).then((res) => {
-      console.log(res)
-    }).catch((err) => {
-      console.error(err)
-    })
+    console.log(newResult)
+    resultsService
+      .createResult(newResult)
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => {
+        console.error(err)
+      })
   }
 
   return (
@@ -121,10 +158,14 @@ export const Test = () => {
             placeholder='Nombre'
             onBlur={handleName}
           />
-          {patientName.error && <p className={styles.test_form_input_error}>{patientName.error}</p>}
+          {patientName.error && (
+            <p className={styles.test_form_input_error}>{patientName.error}</p>
+          )}
         </div>
         <div className={styles.test_form_input}>
-          <label htmlFor='patientEmail'>Correo electrónico del paciente: </label>
+          <label htmlFor='patientEmail'>
+            Correo electrónico del paciente:{' '}
+          </label>
           <input
             type='text'
             value={patientEmail.value}
@@ -135,47 +176,73 @@ export const Test = () => {
             placeholder='Correo electrónico'
             onBlur={handleEmail}
           />
-          {patientEmail.error && <p className={styles.test_form_input_error}>{patientEmail.error}</p>}
+          {patientEmail.error && (
+            <p className={styles.test_form_input_error}>{patientEmail.error}</p>
+          )}
         </div>
         <div className={styles.test_form_input}>
           <label htmlFor='patientAge'>Edad del paciente: </label>
           <input
             type='text'
             value={patientAge.value}
-            required onChange={handleAge}
+            required
+            onChange={handleAge}
             name='patientAge'
             id='patientAge'
             inputMode='numeric'
             placeholder='Edad'
             onBlur={handleAge}
           />
-          {patientAge.error && <p className={styles.test_form_input_error}>{patientAge.error}</p>}
+          {patientAge.error && (
+            <p className={styles.test_form_input_error}>{patientAge.error}</p>
+          )}
         </div>
-        {test.questions && test.questions.map((question) => {
-          return (
-            <div className={styles.test__form_question} key={question.question}>
-              <h3 className={styles.test_form_question_title}>{`${question.index}.- ${question.question}`}</h3>
-              <div className={styles.test_form_question_answers}>
-                {question.answers.map((answer) => {
-                  return (
-                    <div className={styles.test_form_question_answers_container} key={`${question.question}-${answer.option}`}>
-                      <input
-                        type='radio'
-                        name={question.question}
-                        id={`${question.question} ${answer.option}`}
-                        value={answer.value}
-                        className={styles.test_form_question_answers_container_input}
-                        onChange={(e) => handleChange(e, question.index, question?.section)}
-                      />
-                      <label className={styles.test_form_question_answers_container_label} htmlFor={`${question.question} ${answer.option}`}>{answer.option}</label>
-                    </div>
-                  )
-                })}
+        {test.questions &&
+          test.questions.map((question) => {
+            return (
+              <div
+                className={styles.test__form_question}
+                key={question.question}
+              >
+                <h3 className={styles.test_form_question_title}>
+                  {`${question.index}.- ${question.question}`}
+                </h3>
+                <div className={styles.test_form_question_answers}>
+                  {question.answers.map((answer) => {
+                    return (
+                      <div
+                        className={styles.test_form_question_answers_container}
+                        key={`${question.question}-${answer.option}`}
+                      >
+                        <input
+                          type='radio'
+                          name={question.question}
+                          id={`${question.question} ${answer.option}`}
+                          value={answer.value}
+                          className={
+                            styles.test_form_question_answers_container_input
+                          }
+                          onChange={(e) =>
+                            handleChange(e, question.index, question?.section)}
+                        />
+                        <label
+                          className={
+                            styles.test_form_question_answers_container_label
+                          }
+                          htmlFor={`${question.question} ${answer.option}`}
+                        >
+                          {answer.option}
+                        </label>
+                      </div>
+                    )
+                  })}
+                </div>
               </div>
-            </div>
-          )
-        })}
-        <button className={styles.test_form_submit} disabled={!canSubmit}>Calificar prueba</button>
+            )
+          })}
+        <button className={styles.test_form_submit} disabled={!canSubmit}>
+          Calificar prueba
+        </button>
       </form>
     </section>
   )

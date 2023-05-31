@@ -24,7 +24,8 @@ export const tests = [
       { question: 'Dificultad de Concentración', answers: [{ value: 0, option: 'Puedo concentrarme tan bien como siempre' }, { value: 1, option: 'No puedo concentrarme tan bien como habitualmente' }, { value: 2, option: 'Me es difícil mantener la mente en algo por mucho tiempo' }, { value: 3, option: 'Encuentro que no puedo concentrarme en nada' }], index: 19 },
       { question: 'Cansancio o Fatiga', answers: [{ value: 0, option: 'No estoy más cansado o fatigado que lo habitual' }, { value: 1, option: 'Me fatigo o me canso más fácilmente que lo habitual' }, { value: 2, option: 'Estoy demasiado fatigado o cansado para hacer muchas de las cosas que solía hacer' }, { value: 3, option: 'Estoy demasiado fatigado o cansado para hacer la mayoría de las cosas que solía hacer' }], index: 20 },
       { question: 'Pérdida de Interés en el Sexo', answers: [{ value: 0, option: 'No he notado ningún cambio reciente en mi interés por el sexo' }, { value: 1, option: 'Estoy menos interesado en el sexo de lo que solía estarlo' }, { value: 2, option: 'Estoy mucho menos interesado en el sexo' }, { value: 3, option: 'He perdido completamente el interés en el sexo' }], index: 21 }
-    ]
+    ],
+    inputs: []
   },
   {
     id: 2,
@@ -120,6 +121,9 @@ export const tests = [
       { question: 'Sentirme alejado/a de las demás personas', answers: [{ value: 0, option: 'Nada' }, { value: 1, option: 'Muy poco' }, { value: 2, option: 'Poco' }, { value: 3, option: 'Bastante' }, { value: 4, option: 'Mucho' }], index: 88, section: 'PSIC' },
       { question: 'Sentirme culpable', answers: [{ value: 0, option: 'Nada' }, { value: 1, option: 'Muy poco' }, { value: 2, option: 'Poco' }, { value: 3, option: 'Bastante' }, { value: 4, option: 'Mucho' }], index: 89, section: 'ADICIONAL' },
       { question: 'Pensar que en mi cabeza hay algo que no funciona bien', answers: [{ value: 0, option: 'Nada' }, { value: 1, option: 'Muy poco' }, { value: 2, option: 'Poco' }, { value: 3, option: 'Bastante' }, { value: 4, option: 'Mucho' }], index: 90, section: 'PSIC' }
+    ],
+    inputs: [
+
     ]
   },
   {
