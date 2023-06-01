@@ -1,0 +1,12 @@
+@use "/src/styles/variables.scss";
+
+.input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  &_error {
+    margin-top: 0.5rem;
+    color: variables.$error-color;
+  }
+}

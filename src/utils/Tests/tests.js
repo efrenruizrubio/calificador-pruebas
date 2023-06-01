@@ -25,7 +25,11 @@ export const tests = [
       { question: 'Cansancio o Fatiga', answers: [{ value: 0, option: 'No estoy más cansado o fatigado que lo habitual' }, { value: 1, option: 'Me fatigo o me canso más fácilmente que lo habitual' }, { value: 2, option: 'Estoy demasiado fatigado o cansado para hacer muchas de las cosas que solía hacer' }, { value: 3, option: 'Estoy demasiado fatigado o cansado para hacer la mayoría de las cosas que solía hacer' }], index: 20 },
       { question: 'Pérdida de Interés en el Sexo', answers: [{ value: 0, option: 'No he notado ningún cambio reciente en mi interés por el sexo' }, { value: 1, option: 'Estoy menos interesado en el sexo de lo que solía estarlo' }, { value: 2, option: 'Estoy mucho menos interesado en el sexo' }, { value: 3, option: 'He perdido completamente el interés en el sexo' }], index: 21 }
     ],
-    inputs: []
+    inputs: [
+      { label: 'Estado Civil', type: 'text', name: 'maritalStatus', error: 'Necesita añadir estado civil' },
+      { label: 'Ocupación', type: 'text', name: 'occupation', error: 'Necesita añadir ocupación' },
+      { label: 'Educación', type: 'text', name: 'scholarship', error: 'Necesita añadir escolaridad' }
+    ]
   },
   {
     id: 2,

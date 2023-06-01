@@ -1,54 +1,27 @@
 import { useState } from 'react'
 import { useParams } from 'react-router-dom'
+import { Input } from '../index'
 import { tests } from '../../utils/index'
 import styles from './Test.module.scss'
 import { resultsService } from '../../services/index'
 
 export const Test = () => {
-  const [patientName, setPatientName] = useState({ value: '', error: '' })
-  const [patientEmail, setPatientEmail] = useState({ value: '', error: '' })
-  const [patientAge, setPatientAge] = useState({ value: '', error: '' })
-  const [answers, setAnswers] = useState([])
-  const [dynamicInputs, setDynamicInputs] = useState([])
-
-  const [canSubmit, setCanSubmit] = useState(false)
-
   const id = Number(useParams().id)
   const test = tests.find((test) => test.id === id)
 
-  const handleName = (e) => {
-    if (!e.target.value) {
-      setPatientName({ value: '', error: 'El nombre no puede estar vacío' })
-    } else {
-      setPatientName({ value: e.target.value, error: '' })
-    }
-  }
+  // const [patientName, setPatientName] = useState({ value: '', error: '' })
+  const [answers, setAnswers] = useState([])
+  const [dynamicInputs, setDynamicInputs] = useState(Array.from({ length: test.inputs.length }, () => ({ value: '', error: '' })))
 
-  const handleEmail = (e) => {
-    if (!e.target.value) {
-      setPatientEmail({
-        value: '',
-        error: 'El correo electrónico del paciente no puede estar vacío'
-      })
-    } else {
-      setPatientEmail({ value: e.target.value, error: '' })
-    }
-  }
+  const [canSubmit, setCanSubmit] = useState(false)
 
-  const handleAge = (e) => {
-    if (e.target.value) {
-      if (isNaN(Number(e.target.value))) {
-        setPatientAge({
-          value: '',
-          error: 'La edad no puede incluír caracteres no numéricos'
-        })
-      } else {
-        setPatientAge({ value: e.target.value, error: '' })
-      }
-    } else {
-      setPatientAge({ value: '', error: 'La edad no puede estar vacía' })
-    }
-  }
+  // const handleName = (e) => {
+  //   if (!e.target.value) {
+  //     setPatientName({ value: '', error: 'El nombre no puede estar vacío' })
+  //   } else {
+  //     setPatientName({ value: e.target.value, error: '' })
+  //   }
+  // }
 
   const handleChange = (e, index, section) => {
     setAnswers((prev) => {
@@ -79,9 +52,6 @@ export const Test = () => {
     const score = answers.reduce((acc, curr) => acc + curr.value, 0)
     const testResults = answers.sort((a, b) => a.index - b.index)
     const newResult = {
-      name: patientName.value,
-      email: patientEmail.value,
-      age: patientAge.value,
       score,
       testResults,
       appliedTest: id
@@ -93,6 +63,8 @@ export const Test = () => {
       if (score > 19 && score <= 28) status = 'Depresión moderada'
       if (score > 28 && score <= 63) status = 'Depresión grave'
       newResult.status = status
+      /* newResult.date = new Date() */
+      console.log(new Date().toLocaleDateString())
     }
     if (id === 2) {
       const grouped = testResults.reduce((acc, obj) => {
@@ -130,7 +102,6 @@ export const Test = () => {
       console.log('3')
     }
 
-    console.log(newResult)
     resultsService
       .createResult(newResult)
       .then((res) => {
@@ -141,62 +112,33 @@ export const Test = () => {
       })
   }
 
+  const handleInputChange = (e, i, error) => {
+    if (!e.target.value && !dynamicInputs[i].error) {
+      setDynamicInputs((prev) => {
+        const newInputs = [...prev]
+        newInputs[i].error = error
+        return newInputs
+      })
+    } else {
+      setDynamicInputs((prev) => {
+        const newInputs = [...prev]
+        newInputs[i].value = e.target.value
+        newInputs[i].error = ''
+        return newInputs
+      })
+    }
+    console.log(dynamicInputs[i])
+  }
+  console.log('debug')
   return (
     <section className={styles.test}>
       <h1 className={styles.test_title}>Calificador: {test.name}</h1>
-
       <form className={styles.test_form} onSubmit={handleSubmit}>
-        <div className={styles.test_form_input}>
-          <label htmlFor='patientName'>Nombre del paciente: </label>
-          <input
-            type='text'
-            value={patientName.value}
-            required
-            onChange={handleName}
-            name='patientName'
-            id='patientName'
-            placeholder='Nombre'
-            onBlur={handleName}
-          />
-          {patientName.error && (
-            <p className={styles.test_form_input_error}>{patientName.error}</p>
-          )}
-        </div>
-        <div className={styles.test_form_input}>
-          <label htmlFor='patientEmail'>
-            Correo electrónico del paciente:{' '}
-          </label>
-          <input
-            type='text'
-            value={patientEmail.value}
-            required
-            onChange={handleEmail}
-            name='patientEmail'
-            id='patientEmail'
-            placeholder='Correo electrónico'
-            onBlur={handleEmail}
-          />
-          {patientEmail.error && (
-            <p className={styles.test_form_input_error}>{patientEmail.error}</p>
-          )}
-        </div>
-        <div className={styles.test_form_input}>
-          <label htmlFor='patientAge'>Edad del paciente: </label>
-          <input
-            type='text'
-            value={patientAge.value}
-            required
-            onChange={handleAge}
-            name='patientAge'
-            id='patientAge'
-            inputMode='numeric'
-            placeholder='Edad'
-            onBlur={handleAge}
-          />
-          {patientAge.error && (
-            <p className={styles.test_form_input_error}>{patientAge.error}</p>
-          )}
-        </div>
+        {test.inputs && test.inputs.map((input, i) => {
+          const { label, type, name, error } = input
+          return <Input key={input.name} inputProps={{ label, type, name, value: dynamicInputs[i], handleChange: (e) => handleInputChange(e, i, error) }} />
+        }
+        )}
         {test.questions &&
           test.questions.map((question) => {
             return (
