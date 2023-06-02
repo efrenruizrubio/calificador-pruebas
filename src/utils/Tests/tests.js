@@ -2,6 +2,7 @@ export const tests = [
   {
     id: 1,
     name: 'Inventario de Depresión de Beck (BDI-2)',
+    instructions: '',
     questions: [
       { question: 'Tristeza', answers: [{ value: 0, option: 'No me siento triste' }, { value: 1, option: 'Me siento triste gran parte del tiempo' }, { value: 2, option: 'Me siento triste todo el tiempo' }, { value: 3, option: 'Me siento tan triste o soy tan infeliz que no puedo soportarlo' }], index: 1 },
       { question: 'Pesimismo', answers: [{ value: 0, option: 'No estoy desalentado respecto del mí futuro' }, { value: 1, option: 'Me siento más desalentado respecto de mi futuro que lo que solía estarlo' }, { value: 2, option: 'No espero que las cosas funcionen para mí' }, { value: 3, option: 'Siento que no hay esperanza para mi futuro y que sólo puede empeorar' }], index: 2 },
@@ -34,6 +35,7 @@ export const tests = [
   {
     id: 2,
     name: 'Inventario de síntomas SCL-90-R de L. Derogatis',
+    instructions: '',
     questions: [
       { question: 'Dolores de cabeza', answers: [{ value: 0, option: 'Nada' }, { value: 1, option: 'Muy poco' }, { value: 2, option: 'Poco' }, { value: 3, option: 'Bastante' }, { value: 4, option: 'Mucho' }], index: 1, section: 'SOM' },
       { question: 'Nerviosismo', answers: [{ value: 0, option: 'Nada' }, { value: 1, option: 'Muy poco' }, { value: 2, option: 'Poco' }, { value: 3, option: 'Bastante' }, { value: 4, option: 'Mucho' }], index: 2, section: 'ANS' },
@@ -127,11 +129,54 @@ export const tests = [
       { question: 'Pensar que en mi cabeza hay algo que no funciona bien', answers: [{ value: 0, option: 'Nada' }, { value: 1, option: 'Muy poco' }, { value: 2, option: 'Poco' }, { value: 3, option: 'Bastante' }, { value: 4, option: 'Mucho' }], index: 90, section: 'PSIC' }
     ],
     inputs: [
-
+      { label: 'Educación', type: 'select', name: 'scholarship', error: 'Necesita añadir escolaridad', options: ['Primaria incompleta', 'Primaria completa', 'Secundaria incompleta', 'Secundaria completa', 'Preparatoria incompleta', 'Preparatoria/Universidad completa'] },
+      { label: 'Estado Civil', type: 'select', name: 'maritalStatus', error: 'Necesita escoger estado civil', options: ['Soltero', 'Casado', 'Divorciado', 'Separado', 'Viudo/a', 'En pareja'] },
+      { label: 'Ocupación', type: 'text', name: 'occupation', error: 'Necesita añadir ocupación' },
+      { label: 'Lugar de nacimiento', type: 'text', name: 'birthPlace', error: 'Necesita añadir lugar de nacimiento' },
+      { label: 'Lugar de residencia actual', type: 'text', name: 'actualResidencePlace', error: 'Necesita añadir lugar de residencia actual' }
     ]
   },
   {
     id: 3,
-    name: 'Escala de ansiedad de Hamilton'
+    name: 'Inventario de Ansiedad de Beck',
+    instructions: '',
+    questions: [
+      { question: 'Torpe o entumecido', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 1 },
+      { question: 'Acalorado', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 2 },
+      { question: 'Con temblor en las piernas', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 3 },
+      { question: 'Incapaz de relajarse', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 4 },
+      { question: 'Con temor a que ocurra lo peor', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 5 },
+      { question: 'Mareado, o que se le va la cabeza', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 6 },
+      { question: 'Con latidos del corazón fuertes y acelerados', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 7 },
+      { question: 'Inestable', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 8 },
+      { question: 'Atemorizado o asustado', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 9 },
+      { question: 'Nervioso', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 10 },
+      { question: 'Con sensación de bloqueo', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 11 },
+      { question: 'Con temblores en las manos', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 12 },
+      { question: 'Inquieto, inseguro', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 13 },
+      { question: 'Con miedo a perder el control', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 14 },
+      { question: 'Con sensación de ahogo', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 15 },
+      { question: 'Con temor a morir', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 16 },
+      { question: 'Con miedo', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 17 },
+      { question: 'Con problemas digestivos', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 18 },
+      { question: 'Con desvanecimientos', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 19 },
+      { question: 'Con rubor facial', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 20 },
+      { question: 'Con sudores, fríos o calientes', answers: [{ value: 0, option: 'No en absoluto' }, { value: 1, option: 'Levemente' }, { value: 2, option: 'Moderadamente' }, { value: 3, option: 'Severamente' }], index: 21 }
+    ],
+    inputs: []
+  },
+  {
+    id: 4,
+    instructions: '',
+    name: 'Medición de Adicción al Sexo',
+    questions: [],
+    inputs: []
+  },
+  {
+    id: 5,
+    name: '',
+    instructions: '',
+    questions: [],
+    inputs: []
   }
 ]
