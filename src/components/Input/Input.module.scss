@@ -9,4 +9,16 @@
     margin-top: 0.5rem;
     color: variables.$error-color;
   }
+  &_flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    border: 1px solid #757575;
+    padding: 1rem;
+    border-radius: 4px;
+    & > label {
+      flex: 2;
+    }
+  }
 }

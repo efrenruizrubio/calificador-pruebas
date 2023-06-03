@@ -170,7 +170,20 @@ export const tests = [
     instructions: '',
     name: 'Medición de Adicción al Sexo',
     questions: [],
-    inputs: []
+    inputs: [
+      { label: 'Ciudad de residencia', type: 'text', name: 'residentialCity', error: 'Necesita añadir ciudad de residencia' },
+      { label: 'País de nacimiento', type: 'text', name: 'birthPlace', error: 'Necesita añadir país de nacimiento' },
+      { label: 'Estado Civil', type: 'text', name: 'maritalStatus', error: 'Necesita añadir estado civil' },
+      { label: 'Nivel educativo', type: 'select', name: 'scholarship', options: ['Sin estudio', 'Primaria', 'Bachillerato', 'Técnico', 'Tecnólogo', 'Pregrado Universitario', 'Estudios de Posgrado'], error: 'Necesita añadir nivel educativo' },
+      { label: 'Religión a la que pertenece', type: 'select', name: 'religion', options: ['Cristiana', 'Católica', 'Budista', 'Islámica', 'Pentacostal', 'Ninguna', 'Otra'], error: 'Necesita añadir religión' },
+      { label: '¿Tiene pareja actualmente?', type: 'radio', name: 'actualCouple', options: [{ value: true, option: 'Sí' }, { value: false, option: 'No' }] },
+      { label: '¿Tiene pareja estable?', type: 'radio', name: 'stableCouple', options: [{ value: true, option: 'Sí' }, { value: false, option: 'No' }] },
+      { label: 'Número de parejas sexuales', type: 'text', name: 'numberCouples', error: 'Necesita añadir número de parejas' },
+      { label: '¿Has tenido relaciones sexuales (sexo oral, vaginal, anal y/o masturbación mutua)?', type: 'radio', name: 'hasSexualRelations', options: [{ value: true, option: 'Sí' }, { value: false, option: 'No' }] },
+      { label: '¿Con cuantas personas has tenido relaciones sexuales con penetración en los últimos 6 meses con condón?', type: 'text', name: 'protectedSexualRelations', error: 'Necesita añadir número de personas' },
+      { label: '¿Con cuantas personas has tenido relaciones sexuales con penetración en los últimos 6 meses sin condón?', type: 'text', name: 'unprotectedSexualRelations', error: 'Necesita añadir número de personas' },
+      { label: 'Condón', type: 'radio', name: 'protectionMethodsCondom', options: [{ value: true, option: 'Sí' }, { value: false, option: 'No' }], specialText: '¿En tus relaciones sexuales con penetración utilizas alguno de los siguientes métodos de protección? Por favor marque la casilla correspondiente y con una X señale el porcentaje de uso del método de protección. ' }
+    ]
   },
   {
     id: 5,

@@ -93,14 +93,15 @@ export const Test = () => {
         return newInputs
       })
     }
+    console.log(dynamicInputs)
   }
   return (
     <section className={styles.test}>
       <h1 className={styles.test_title}>Calificador: {test.name}</h1>
       <form className={styles.test_form} onSubmit={handleSubmit}>
         {test.inputs && test.inputs.map((input, i) => {
-          const { label, type, name, error } = input
-          return <Input key={input.name} inputProps={{ label, type, name, value: dynamicInputs[i], handleChange: (e) => handleInputChange({ event: e, index: i, name, error }), options: input?.options }} />
+          const { label, type, name, error, id, options, specialText } = input
+          return <Input key={input.name} inputProps={{ label, type, name, value: dynamicInputs[i], handleChange: (e) => handleInputChange({ event: e, index: i, name, error }), options, id }} specialText={specialText} />
         }
         )}
         {test.questions &&
@@ -146,7 +147,7 @@ export const Test = () => {
               </div>
             )
           })}
-        <button className={styles.test_form_submit} disabled={!canSubmit}>
+        <button className={styles.test_form_submit} disabled={!canSubmit} type='submit'>
           Calificar prueba
         </button>
       </form>
