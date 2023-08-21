@@ -64,7 +64,6 @@ export const Test = () => {
       newResult.status = status
     }
 
-    console.log(newResult)
     resultsService
       .createResult(newResult)
       .then((res) => {
@@ -93,22 +92,26 @@ export const Test = () => {
         return newInputs
       })
     }
-    console.log(dynamicInputs)
   }
+
   return (
     <section className={styles.test}>
       <h1 className={styles.test_title}>Calificador: {test.name}</h1>
       <form className={styles.test_form} onSubmit={handleSubmit}>
         {test.inputs && test.inputs.map((input, i) => {
-          const { label, type, name, error, id, options, specialText } = input
-          return <Input key={input.name} inputProps={{ label, type, name, value: dynamicInputs[i], handleChange: (e) => handleInputChange({ event: e, index: i, name, error }), options, id }} specialText={specialText} />
+          const { name, error } = input
+          return (
+            <Input key={input.name} inputProps={{ ...input, value: dynamicInputs[i], handleChange: (e) => handleInputChange({ event: e, index: i, name, error }) }}>
+              {input.specialText ? <p className={styles.test_input_special}>{input.specialText}</p> : null}
+            </Input>
+          )
         }
         )}
         {test.questions &&
           test.questions.map((question) => {
             return (
               <div
-                className={styles.test__form_question}
+                className={styles.test_form_question}
                 key={question.question}
               >
                 <h3 className={styles.test_form_question_title}>

@@ -21,4 +21,13 @@
       flex: 2;
     }
   }
+  &_checkbox {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    gap: 2rem;
+    &_input {
+      justify-self: end;
+    }
+  }
 }
