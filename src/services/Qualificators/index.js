@@ -45,8 +45,13 @@ export const beckAnxietyInventory = ({ score }) => {
   if (score > 30 && score <= 63) return 'Ansiedad severa'
 }
 
+export const measuringSexAddiction = ({ score }) => {
+  return 'Resultado'
+}
+
 export const qualificatorsService = {
   beckDepressionInventory,
   derogatisSymptomsInventory,
-  beckAnxietyInventory
+  beckAnxietyInventory,
+  measuringSexAddiction
 }

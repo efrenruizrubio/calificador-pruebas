@@ -14,26 +14,25 @@ export const Test = () => {
 
   const [canSubmit, setCanSubmit] = useState(false)
 
-  const handleChange = (e, index, section) => {
+  const handleChange = (event, index, section) => {
     setAnswers((prev) => {
-      const element = prev.findIndex((el) => el.option === e.target.name)
-      if (prev[element]) {
-        prev.splice(element, 1)
+      const { name, value } = event.target
+      const oldElements = structuredClone(prev)
+      const element = oldElements.findIndex((el) => el.index === index)
+      if (oldElements[element]) {
+        oldElements.splice(element, 1)
       }
       const elements = [
-        ...prev,
+        ...oldElements,
         {
-          option: e.target.name,
-          value: Number(e.target.value),
+          option: name.split(' -')[0],
+          value: Number(value),
           index,
           ...(section && { section })
         }
       ]
-      if (elements.length === test.questions.length) {
-        setCanSubmit(true)
-      } else {
-        setCanSubmit(false)
-      }
+      if (elements.length === test.questions.length) setCanSubmit(true)
+      else setCanSubmit(false)
       return elements
     })
   }
@@ -63,11 +62,19 @@ export const Test = () => {
       const status = qualificatorsService.beckAnxietyInventory({ score })
       newResult.status = status
     }
+    if (id === 4) {
+      const status = qualificatorsService.measuringSexAddiction({ score })
+      newResult.status = status
+    }
+
+    const aux = structuredClone(newResult)
+    const payload = newResult
+    payload.inputs = aux.inputs.filter((i) => i.name !== '' || i.value !== '')
 
     resultsService
-      .createResult(newResult)
+      .createResult(payload)
       .then((res) => {
-        console.log(res)
+        // console.log(res)
       })
       .catch((err) => {
         console.error(err)
@@ -102,7 +109,7 @@ export const Test = () => {
           const { name, error } = input
           return (
             <Input key={input.name} inputProps={{ ...input, value: dynamicInputs[i], handleChange: (e) => handleInputChange({ event: e, index: i, name, error }) }}>
-              {input.specialText ? <p className={styles.test_input_special}>{input.specialText}</p> : null}
+              {input.specialText ? <p className={styles.test_input_special}><strong>{input.specialText}</strong></p> : null}
             </Input>
           )
         }
@@ -112,7 +119,7 @@ export const Test = () => {
             return (
               <div
                 className={styles.test_form_question}
-                key={question.question}
+                key={`${question.question}-${question.index}`}
               >
                 <h3 className={styles.test_form_question_title}>
                   {`${question.index}.- ${question.question}`}
@@ -126,8 +133,8 @@ export const Test = () => {
                       >
                         <input
                           type='radio'
-                          name={question.question}
-                          id={`${question.question} ${answer.option}`}
+                          name={`${question.question} -${question.index}`}
+                          id={`${question.question}-${answer.option}-${question.index}`}
                           value={answer.value}
                           className={
                             styles.test_form_question_answers_container_input
@@ -139,7 +146,7 @@ export const Test = () => {
                           className={
                             styles.test_form_question_answers_container_label
                           }
-                          htmlFor={`${question.question} ${answer.option}`}
+                          htmlFor={`${question.question}-${answer.option}-${question.index}`}
                         >
                           {answer.option}
                         </label>
